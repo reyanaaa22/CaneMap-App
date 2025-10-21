@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "624993566775",
+    "firebase_url": "https://canemap-system-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "canemap-system",
+    "storage_bucket": "canemap-system.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624993566775:android:e0a914e018cf96fa123fb2",
+        "android_client_info": {
+          "package_name": "com.example.canemap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU0akDUS9cSXl6e6vC7udfKiE_Bsqt8rI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
