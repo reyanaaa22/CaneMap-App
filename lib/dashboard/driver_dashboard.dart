@@ -3,6 +3,9 @@ import 'dashboard_models.dart';
 import 'dynamic_bottom_nav.dart';
 import 'map_page.dart';
 import 'package:latlong2/latlong.dart';
+import 'menu_page.dart';
+import 'tasks/handler_tasks_page.dart';
+import 'reports/driver_reports_page.dart';
 
 class DriverDashboard extends StatefulWidget {
   const DriverDashboard({super.key});
@@ -17,7 +20,42 @@ class _DriverDashboardState extends State<DriverDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
+      backgroundColor: const Color(0xFFF0F7F3),
+      appBar: _index == 0
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: const Color(0xFFF0F7F3),
+              elevation: 0,
+              title: _buildWeatherWidget(),
+              centerTitle: false,
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.notifications_none, color: Colors.black87),
+                  tooltip: 'Notifications',
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Notifications'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 16, left: 8),
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: const Color(0xFF2F8F46),
+                    child: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : null,
       body: _buildBody(),
       bottomNavigationBar: DynamicBottomNav(
         role: UserRole.driver,
@@ -44,40 +82,213 @@ class _DriverDashboardState extends State<DriverDashboard> {
     }
   }
 
-  Widget _homeSummary() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _homeSummary() => SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+              child: Column(
+                children: [
+                  _searchWithMic(),
+                  const SizedBox(height: 16),
+                  Container(
+                    height: 250,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: MapPage(pins: [LatLng(11.005, 124.607)]),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Summary',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black87,
+                  letterSpacing: 0.3,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.local_shipping,
+                      title: 'Active Tasks',
+                      count: '2',
+                      color: const Color(0xFF2F8F46),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.assignment,
+                      title: 'Pending',
+                      count: '5',
+                      color: const Color(0xFF1E88E5),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.check_circle,
+                      title: 'Completed',
+                      count: '18',
+                      color: const Color(0xFFFFA500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+          ],
+        ),
+      );
+
+  Widget _mapPlaceholder() => Container(
+    color: const Color(0xFFF0F7F3),
+    child: MapPage(pins: [LatLng(11.005, 124.607)]),
+  );
+
+  Widget _tasksPlaceholder() => const HandlerTasksPage();
+
+  Widget _earningsPlaceholder() => const DriverReportsPage();
+
+  Widget _profilePlaceholder() => const MenuPage();
+
+  Widget _buildWeatherWidget() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Features Section
-          Text(
-            'Features',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Colors.grey.shade700,
-              letterSpacing: 0.5,
+          Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                Icons.cloud,
+                color: Colors.grey.shade700,
+                size: 32,
+              ),
+              Positioned(
+                right: -4,
+                bottom: 2,
+                child: Icon(
+                  Icons.wb_sunny,
+                  color: Colors.amber.shade600,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                '27°C',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black87,
+                ),
+              ),
+              Text(
+                'Partly cloudy',
+                style: TextStyle(
+                  fontSize: 11,
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryCard({
+    required IconData icon,
+    required String title,
+    required String count,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.12),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 28,
             ),
           ),
           const SizedBox(height: 12),
-          _buildBadgeHolderCard(),
-          const SizedBox(height: 24),
-          // Additional content
           Text(
-            'Routes & Assignments',
+            count,
             style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Colors.grey.shade700,
-              letterSpacing: 0.5,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+              color: color,
+              letterSpacing: -0.5,
             ),
           ),
-          const SizedBox(height: 12),
-          Center(
-            child: Text(
-              'Driver Home: routes & assignments',
-              style: TextStyle(color: Colors.grey.shade600),
+          const SizedBox(height: 6),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
+              letterSpacing: 0.2,
             ),
           ),
         ],
@@ -85,104 +296,41 @@ class _DriverDashboardState extends State<DriverDashboard> {
     );
   }
 
-  Widget _buildBadgeHolderCard() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.green.shade600, Colors.green.shade800],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+  Widget _searchWithMic() => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.green.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.verified_user,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Driver Badge Holder',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Get verified and unlock premium features',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Redirecting to application form...'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green.shade700,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Apply Now',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search routes or locations',
+            hintStyle: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 14,
+            ),
+            prefixIcon: Icon(
+              Icons.search,
+              color: const Color(0xFF2F8F46),
+              size: 22,
+            ),
+            suffixIcon: Icon(
+              Icons.mic,
+              color: const Color(0xFF2F8F46),
+              size: 22,
+            ),
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
             ),
           ),
-        ],
-      ),
-    );
-  }
-  Widget _mapPlaceholder() => MapPage(pins: [LatLng(11.005, 124.607)]);
-  Widget _tasksPlaceholder() =>
-      Center(child: Text('Driver tasks & delivery worklogs'));
-  Widget _earningsPlaceholder() =>
-      Center(child: Text('Earnings / trips report'));
-  Widget _profilePlaceholder() => Center(child: Text('Profile & Badge'));
+        ),
+      );
 }

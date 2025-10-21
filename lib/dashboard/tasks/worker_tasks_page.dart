@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'handler_tasks_page.dart';
 import 'task_detail_page.dart';
 
-enum TaskStatus { pending, ongoing, completed }
-
-class HandlerTasksPage extends StatefulWidget {
-  const HandlerTasksPage({super.key});
+class WorkerTasksPage extends StatefulWidget {
+  const WorkerTasksPage({super.key});
 
   @override
-  State<HandlerTasksPage> createState() => _HandlerTasksPageState();
+  State<WorkerTasksPage> createState() => _WorkerTasksPageState();
 }
 
-class _HandlerTasksPageState extends State<HandlerTasksPage> {
+class _WorkerTasksPageState extends State<WorkerTasksPage> {
   TaskStatus? _filter;
 
-  // Sample data for now; replace with real data source later.
   final List<Map<String, dynamic>> _tasks = [
     {
       'title': 'Inspect irrigation lines',
@@ -206,7 +204,7 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
                 : ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     itemBuilder: (context, index) {
-                      final t = filtered[index];
+                      final t = _tasks[index];
                       return _buildTaskCard(t, theme);
                     },
                     itemCount: filtered.length,
@@ -236,12 +234,12 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: statusColor.withOpacity(0.15),
+            color: statusColor.withValues(alpha: 0.15),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 6,
               offset: const Offset(0, 1),
             ),
@@ -255,9 +253,9 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                  color: statusColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(8),
+              ),
                 child: CircleAvatar(
                   radius: 5,
                   backgroundColor: statusColor,
@@ -292,9 +290,9 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
+                  color: statusColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(6),
+              ),
                 child: Text(
                   statusLabel,
                   style: TextStyle(
@@ -312,7 +310,6 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
     );
   }
 
-
   Color _getStatusColor(TaskStatus status) {
     switch (status) {
       case TaskStatus.pending:
@@ -322,13 +319,6 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
       case TaskStatus.completed:
         return const Color(0xFF2E7D32);
     }
-  }
-
-  Widget _statusDot(TaskStatus status) {
-    return CircleAvatar(
-      radius: 8,
-      backgroundColor: _getStatusColor(status),
-    );
   }
 
   String _statusLabel(TaskStatus status) {
@@ -341,6 +331,4 @@ class _HandlerTasksPageState extends State<HandlerTasksPage> {
         return 'Completed';
     }
   }
-
 }
-

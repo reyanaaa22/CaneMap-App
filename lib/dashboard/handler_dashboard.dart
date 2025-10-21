@@ -5,7 +5,6 @@ import 'map_page.dart';
 import 'tasks/handler_tasks_page.dart';
 import 'menu_page.dart';
 import 'fields/register_field_page.dart';
-import 'growth/growth_list_page.dart';
 import 'package:latlong2/latlong.dart';
 import '../services/onboarding_service.dart';
 import '../widgets/onboarding_overlay.dart';
@@ -20,7 +19,6 @@ class HandlerDashboard extends StatefulWidget {
 
 class _HandlerDashboardState extends State<HandlerDashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey _plusButtonKey = GlobalKey();
   final GlobalKey _mapPinKey = GlobalKey();
   int _index = 0;
   bool _showOnboarding = false;
@@ -51,30 +49,24 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      appBar: _index == 1
-          ? null
-          : AppBar(
+      backgroundColor: const Color(0xFFF0F7F3),
+      appBar: _index == 0
+          ? AppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
+              backgroundColor: const Color(0xFFF0F7F3),
               title: _buildWeatherWidget(),
               centerTitle: false,
               actions: [
                 IconButton(
-                  key: _plusButtonKey,
-                  icon: const Icon(Icons.add, color: Colors.black87),
-                  tooltip: 'Register Field',
-                  onPressed: () async {
-                    final result = await Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (_) => const RegisterFieldPage()),
+                  icon: const Icon(Icons.notifications_none, color: Colors.black87),
+                  tooltip: 'Notifications',
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Notifications'),
+                        duration: Duration(seconds: 1),
+                      ),
                     );
-                    if (result != null) {
-                      if (!mounted) return;
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Field saved')),
-                      );
-                    }
                   },
                 ),
                 Container(
@@ -90,13 +82,13 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
                   ),
                 ),
               ],
-            ),
+            )
+          : null,
       // drawer removed; hamburger icon will not appear
       body: _showOnboarding
           ? OnboardingOverlay(
               onComplete: _completeOnboarding,
               targetKeys: {
-                'plus_button': _plusButtonKey,
                 'map_pin': _mapPinKey,
               },
               child: _buildBody(),
@@ -119,6 +111,8 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
         case 1:
           return _mapPlaceholder();
         case 2:
+          return _registerFieldPage();
+        case 3:
         default:
           return _profilePlaceholder();
       }
@@ -130,13 +124,17 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
       case 1:
         return _mapPlaceholder();
       case 2:
-        return _tasksPlaceholder();
+        return _registerFieldPage();
       case 3:
-        return _growthPlaceholder();
+        return _tasksPlaceholder();
       case 4:
       default:
         return _profilePlaceholder();
     }
+  }
+
+  Widget _registerFieldPage() {
+    return const RegisterFieldPage();
   }
 
   Widget _homeSummary() => SingleChildScrollView(
@@ -149,24 +147,6 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
               child: Column(
                 children: [
                   _searchWithMic(),
-                  const SizedBox(height: 12),
-                  // Features Section - Driver Badge Holder
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Features',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey.shade700,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      _buildBadgeHolderCard(),
-                    ],
-                  ),
                   const SizedBox(height: 16),
                   // map with decorative green bubbles using Stack
                   SizedBox(
@@ -177,63 +157,20 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
                         Positioned.fill(
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(14),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.08),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
                             clipBehavior: Clip.hardEdge,
                             child: MapPage(pins: [LatLng(11.005, 124.607)]),
                           ),
                         ),
                         // decorative green bubbles
-                        Positioned(
-                          top: 8,
-                          left: 12,
-                          child: Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFDAF5E3),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color.fromRGBO(47, 143, 70, 0.12),
-                                  blurRadius: 6,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.grass,
-                              color: Color(0xFF2F8F46),
-                              size: 18,
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 18,
-                          right: 14,
-                          child: Container(
-                            width: 56,
-                            height: 56,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFEAF8EE),
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color.fromRGBO(47, 143, 70, 0.14),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.location_on,
-                              color: Color(0xFF2F8F46),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -241,48 +178,53 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
               ),
             ),
             const SizedBox(height: 16),
-            // horizontal product cards
-            SizedBox(
-              height: 140,
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                scrollDirection: Axis.horizontal,
-                children: [
-                  _productCard(
-                    Icons.opacity,
-                    'Irrigation',
-                    'Monitor water',
-                    Colors.teal,
-                  ),
-                  const SizedBox(width: 12),
-                  _productCard(
-                    Icons.thermostat,
-                    'Weather',
-                    'Forecasts',
-                    Colors.orange,
-                  ),
-                  const SizedBox(width: 12),
-                  _productCard(
-                    Icons.local_florist,
-                    'Crop',
-                    'Growth tips',
-                    Colors.green,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 'Summary',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.black87,
+                  letterSpacing: 0.3,
+                ),
               ),
             ),
-            const SizedBox(height: 12),
-            Center(
-                child: Text('Handler Home: summary of fields, workers, tasks')),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.landscape,
+                      title: 'Fields',
+                      count: '12',
+                      color: const Color(0xFF2F8F46),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.group,
+                      title: 'Workers',
+                      count: '8',
+                      color: const Color(0xFF1E88E5),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: _buildSummaryCard(
+                      icon: Icons.check_circle,
+                      title: 'Tasks',
+                      count: '24',
+                      color: const Color(0xFFFFA500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
           ],
         ),
       );
@@ -296,13 +238,19 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
               child: Column(
                 children: [
                   _searchWithMic(),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
                   Container(
                     key: _mapPinKey,
                     height: 250,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,
+                      borderRadius: BorderRadius.circular(14),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     clipBehavior: Clip.hardEdge,
                     child: MapPage(pins: [LatLng(11.005, 124.607)]),
@@ -310,79 +258,30 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
                 ],
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 'No registered field. Please register a field to access all features',
                 textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey.shade700,
+                  height: 1.6,
+                ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
           ],
         ),
       );
   Widget _mapPlaceholder() => Container(
-    color: Colors.white,
+    color: const Color(0xFFF0F7F3),
     child: MapPage(pins: [LatLng(11.005, 124.607)]),
   );
   Widget _tasksPlaceholder() => const HandlerTasksPage();
-  Widget _growthPlaceholder() => const GrowthListPage();
   Widget _profilePlaceholder() => const MenuPage();
 
-  Widget _productCard(
-    IconData icon,
-    String title,
-    String subtitle,
-    Color color,
-  ) =>
-      Container(
-        width: 200,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.06),
-              blurRadius: 10,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  // green bubble background
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEAF8EE),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Positioned(
-                    left: 8,
-                    top: 8,
-                    child: Icon(icon, color: color, size: 24),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
-              const SizedBox(height: 6),
-              Text(
-                subtitle,
-                style: const TextStyle(color: Colors.black54, fontSize: 12),
-              ),
-            ],
-          ),
-        ),
-      );
 
   Widget _buildWeatherWidget() {
     return Container(
@@ -448,94 +347,65 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
     );
   }
 
-  Widget _buildBadgeHolderCard() {
+
+  Widget _buildSummaryCard({
+    required IconData icon,
+    required String title,
+    required String count,
+    required Color color,
+  }) {
     return Container(
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Colors.green.shade600, Colors.green.shade800],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.green.withOpacity(0.3),
-            blurRadius: 8,
+            color: color.withOpacity(0.12),
+            blurRadius: 12,
             offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.verified_user,
-                  color: Colors.white,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Driver Badge Holder',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Get verified and unlock premium features',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: 28,
+            ),
           ),
-          const SizedBox(height: 16),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Redirecting to application form...'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green.shade700,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: const Text(
-                'Apply Now',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+          const SizedBox(height: 12),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+              color: color,
+              letterSpacing: -0.5,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey.shade700,
+              letterSpacing: 0.2,
             ),
           ),
         ],
@@ -545,92 +415,39 @@ class _HandlerDashboardState extends State<HandlerDashboard> {
 
   Widget _searchWithMic() => Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 20,
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 12,
               offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Stack(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search fields or locations',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 16,
-                ),
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(left: 4, right: 8),
-                  child: Icon(
-                    Icons.search_rounded,
-                    color: Colors.grey.shade600,
-                    size: 24,
-                  ),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 20,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Color(0xFF2F8F46),
-                    width: 2,
-                  ),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-              ),
+        child: TextField(
+          decoration: InputDecoration(
+            hintText: 'Search fields or locations',
+            hintStyle: TextStyle(
+              color: Colors.grey.shade500,
+              fontSize: 14,
             ),
-            Positioned(
-              right: 6,
-              top: 6,
-              bottom: 6,
-              child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  width: 48,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF2F8F46), Color(0xFF1F6B2F)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF2F8F46).withValues(alpha: 0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.mic_rounded,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-              ),
+            prefixIcon: Icon(
+              Icons.search,
+              color: const Color(0xFF2F8F46),
+              size: 22,
             ),
-          ],
+            suffixIcon: Icon(
+              Icons.mic,
+              color: const Color(0xFF2F8F46),
+              size: 22,
+            ),
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 14,
+            ),
+          ),
         ),
       );
 }

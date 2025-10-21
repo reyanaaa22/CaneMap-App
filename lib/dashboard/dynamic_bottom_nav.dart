@@ -94,6 +94,10 @@ class DynamicBottomNav extends StatelessWidget {
               icon: Icon(Icons.map_outlined),
               label: 'Map',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_circle_outline),
+              label: 'Add',
+            ),
             BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
           ];
         }
@@ -104,12 +108,12 @@ class DynamicBottomNav extends StatelessWidget {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.map_outlined), label: 'Map'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            label: 'Tasks',
+            icon: Icon(Icons.add_circle_outline),
+            label: 'Add',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.park_outlined),
-            label: 'Growth',
+            icon: Icon(Icons.list_alt_outlined),
+            label: 'Tasks',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
         ];
@@ -155,7 +159,7 @@ class DynamicBottomNav extends StatelessWidget {
             label: 'Tasks',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money_outlined),
+            icon: Icon(Icons.analytics_outlined),
             label: 'Earnings',
           ),
           BottomNavigationBarItem(
