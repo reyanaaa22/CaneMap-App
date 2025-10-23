@@ -371,7 +371,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
               Switch(
                 value: _driversOnly,
                 onChanged: (v) => setState(() => _driversOnly = v),
-                activeColor: const Color(0xFF2F8F46),
+                activeThumbColor: const Color(0xFF2F8F46),
               ),
               const SizedBox(width: 8),
               const Expanded(

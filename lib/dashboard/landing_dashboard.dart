@@ -20,39 +20,7 @@ class _LandingDashboardState extends State<LandingDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F7F3),
-      appBar: _index == 0
-          ? AppBar(
-              automaticallyImplyLeading: false,
-              backgroundColor: const Color(0xFFF0F7F3),
-              title: _buildWeatherWidget(),
-              centerTitle: false,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.add, color: Colors.black87),
-                  tooltip: 'Register Field',
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const RegisterFieldPage(),
-                      ),
-                    );
-                  },
-                ),
-                Container(
-                  margin: const EdgeInsets.only(right: 16, left: 8),
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: const Color(0xFF2F8F46),
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : null,
+      appBar: null,
       body: Stack(
         children: [
           _buildBody(),
@@ -68,6 +36,182 @@ class _LandingDashboardState extends State<LandingDashboard> {
         ],
       ),
       bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildHeroSection() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1B5E20), Color(0xFF2F8F46)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(26),
+          bottomRight: Radius.circular(26),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.white.withOpacity(0.25),
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'CaneMap User',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Normal Access',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
+              _buildHeroActionButton(
+                icon: Icons.add,
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const RegisterFieldPage(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 10),
+              _buildHeroActionButton(
+                icon: Icons.cloud_outlined,
+                backgroundColor: Colors.white,
+                iconColor: const Color(0xFF2F8F46),
+                onTap: () {},
+              ),
+            ],
+          ),
+          const SizedBox(height: 28),
+          const Text(
+            'Welcome to CaneMap',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.4,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Monitor your sugarcane fields, tasks, and weather insights all in one place.',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.85),
+              fontSize: 13,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 20),
+          _buildSearchBar(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search fields or locations',
+          hintStyle: TextStyle(
+            color: Colors.grey.shade500,
+            fontSize: 14,
+          ),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: Color(0xFF2F8F46),
+            size: 22,
+          ),
+          suffixIcon: const Icon(
+            Icons.mic,
+            color: Color(0xFF2F8F46),
+            size: 22,
+          ),
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 18,
+            vertical: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroActionButton({
+    required IconData icon,
+    required VoidCallback onTap,
+    Color backgroundColor = Colors.white,
+    Color iconColor = const Color(0xFF2F8F46),
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(24),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Icon(
+              icon,
+              color: iconColor,
+              size: 18,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -168,153 +312,122 @@ class _LandingDashboardState extends State<LandingDashboard> {
 
   Widget _homeSummary() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          // Search Bar
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search fields or locations',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade500,
-                  fontSize: 14,
-                ),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: const Color(0xFF2F8F46),
-                  size: 22,
-                ),
-                suffixIcon: Icon(
-                  Icons.mic,
-                  color: const Color(0xFF2F8F46),
-                  size: 22,
-                ),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-              ),
-            ),
-          ),
+          _buildHeroSection(),
           const SizedBox(height: 20),
-
-          // Map Section
-          Container(
-            height: 280,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.08),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(14),
-              child: const MapPage(pins: []),
-            ),
-          ),
-          const SizedBox(height: 24),
-
-          // Quick Actions Section
-          Text(
-            'Quick Actions',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Colors.grey.shade700,
-              letterSpacing: 0.5,
-            ),
-          ),
-          const SizedBox(height: 12),
-
-          // Driver Badge Card
-          _buildActionCard(
-            icon: Icons.verified_user,
-            title: 'Apply for Driver Badge',
-            subtitle: 'Get verified and unlock premium features',
-            color: const Color(0xFF1E88E5),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const DriverBadgeApplication(),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 24),
-
-          // Info Section
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF0F7F3),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: const Color(0xFFDCE9E1),
-                width: 1,
-              ),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF2F8F46),
-                        borderRadius: BorderRadius.circular(8),
+                // Map Section
+                Container(
+                  height: 280,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
-                      child: const Icon(
-                        Icons.info,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    const Expanded(
-                      child: Text(
-                        'Getting Started',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF2F5E1F),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '1. Register or join a field to get started\n2. Complete your profile and verification\n3. Access role-specific features once approved',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
-                    height: 1.6,
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: const MapPage(pins: []),
                   ),
                 ),
+                const SizedBox(height: 24),
+
+                // Quick Actions Section
+                Text(
+                  'Quick Actions',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.grey.shade700,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Driver Badge Card
+                _buildActionCard(
+                  icon: Icons.verified_user,
+                  title: 'Apply for Driver Badge',
+                  subtitle: 'Get verified and unlock premium features',
+                  color: const Color(0xFF1E88E5),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const DriverBadgeApplication(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+
+                // Info Section
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0F7F3),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFDCE9E1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2F8F46),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.info,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          const Expanded(
+                            child: Text(
+                              'Getting Started',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF2F5E1F),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        '1. Register or join a field to get started\n2. Complete your profile and verification\n3. Access role-specific features once approved',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade700,
+                          height: 1.6,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
               ],
             ),
           ),
-          const SizedBox(height: 24),
         ],
       ),
     );
@@ -399,65 +512,4 @@ class _LandingDashboardState extends State<LandingDashboard> {
     );
   }
 
-  Widget _buildWeatherWidget() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              Icon(
-                Icons.cloud,
-                color: Colors.grey.shade700,
-                size: 24,
-              ),
-              Positioned(
-                right: -2,
-                bottom: -1,
-                child: Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFA500),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                '27°C',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: 1),
-              Text(
-                'Partly cloudy',
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.8),
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }

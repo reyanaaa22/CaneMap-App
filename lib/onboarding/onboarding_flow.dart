@@ -127,12 +127,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF2F8F46),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 18),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          elevation: 6,
-                          shadowColor: const Color(0xFF2F8F46).withOpacity(0.4),
+                          elevation: 8,
+                          shadowColor: const Color(0xFF2F8F46).withOpacity(0.5),
                         ),
                         onPressed: () {
                           if (_index < _pages.length - 1) {
@@ -151,6 +152,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.5,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -222,10 +224,11 @@ class _OnboardPage extends StatelessWidget {
                   child: AnimatedPageTransition(
                     pageIndex: pageIndex,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           data.title,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w800,
@@ -236,6 +239,7 @@ class _OnboardPage extends StatelessWidget {
                         const SizedBox(height: 12),
                         Text(
                           data.subtitle,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
                             height: 1.6,

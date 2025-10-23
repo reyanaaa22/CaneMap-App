@@ -182,7 +182,7 @@ class _DisplayAppearancePageState extends State<DisplayAppearancePage> {
                           Brightness.dark);
               return Switch(
                 value: isDark,
-                activeColor: const Color(0xFF2F8F46),
+                activeThumbColor: const Color(0xFF2F8F46),
                 onChanged: (_) => AppTheme.toggleMode(),
               );
             },
