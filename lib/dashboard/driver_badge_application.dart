@@ -116,10 +116,10 @@ class _DriverBadgeApplicationState extends State<DriverBadgeApplication> {
         title: const Text(
           'Driver Badge Application',
           style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
             color: Colors.black87,
-            letterSpacing: 0.3,
+            letterSpacing: 0.25,
           ),
         ),
         centerTitle: true,

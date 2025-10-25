@@ -21,131 +21,169 @@ class _IdsCameraPageState extends State<IdsCameraPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5FAF7),
       appBar: AppBar(
-        title: const Text('Identity Verification'),
+        backgroundColor: const Color(0xFFF5FAF7),
+        elevation: 0,
         centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Capture Your Identity',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: Colors.grey.shade800,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Take clear photos of your ID and a selfie for verification',
-              style: TextStyle(
-                fontSize: 13,
-                color: Colors.grey.shade600,
-              ),
-            ),
-            const SizedBox(height: 24),
-            _buildCaptureCard(
-              'Valid ID (Front)',
-              'Clear photo of your ID front',
-              Icons.credit_card_outlined,
-              widget.draft.idFront?.name,
-              () async {
-                widget.draft.idFront = await _picker.pickImage(
-                  source: ImageSource.camera,
-                );
-                setState(() {});
-              },
-            ),
-            const SizedBox(height: 16),
-            _buildCaptureCard(
-              'Valid ID (Back)',
-              'Clear photo of your ID back',
-              Icons.credit_card_outlined,
-              widget.draft.idBack?.name,
-              () async {
-                widget.draft.idBack = await _picker.pickImage(
-                  source: ImageSource.camera,
-                );
-                setState(() {});
-              },
-            ),
-            const SizedBox(height: 16),
-            _buildCaptureCard(
-              'Selfie Holding Your ID',
-              'Your face with ID clearly visible',
-              Icons.face_outlined,
-              widget.draft.selfie?.name,
-              () async {
-                widget.draft.selfie = await _picker.pickImage(
-                  source: ImageSource.camera,
-                );
-                setState(() {});
-              },
-            ),
-            const Spacer(),
-            _buildProgressIndicator(),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      side: BorderSide(color: Colors.grey.shade400),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      'Back',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _submitting ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade700,
-                      disabledBackgroundColor: Colors.grey.shade400,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: _submitting
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Text(
-                            'Submit',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+        iconTheme: const IconThemeData(color: Color(0xFF1B4332)),
+        title: const Text(
+          'Identity Verification',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF1B4332),
+            letterSpacing: 0.25,
+          ),
         ),
       ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 12, 18, 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildIntro(
+                title: 'Capture Your Identity',
+                subtitle: 'Take clear photos of your ID and a selfie for verification.',
+              ),
+              const SizedBox(height: 18),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildCaptureCard(
+                        'Valid ID (Front)',
+                        'Clear photo of your ID front',
+                        Icons.credit_card_outlined,
+                        widget.draft.idFront?.name,
+                        accent: const Color(0xFF2F8F46),
+                        () async {
+                          widget.draft.idFront = await _picker.pickImage(
+                            source: ImageSource.camera,
+                          );
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _buildCaptureCard(
+                        'Valid ID (Back)',
+                        'Clear photo of your ID back',
+                        Icons.credit_card_outlined,
+                        widget.draft.idBack?.name,
+                        accent: const Color(0xFF1E88E5),
+                        () async {
+                          widget.draft.idBack = await _picker.pickImage(
+                            source: ImageSource.camera,
+                          );
+                          setState(() {});
+                        },
+                      ),
+                      const SizedBox(height: 14),
+                      _buildCaptureCard(
+                        'Selfie Holding Your ID',
+                        'Your face with ID clearly visible',
+                        Icons.face_outlined,
+                        widget.draft.selfie?.name,
+                        accent: const Color(0xFFFB8C00),
+                        () async {
+                          widget.draft.selfie = await _picker.pickImage(
+                            source: ImageSource.camera,
+                          );
+                          setState(() {});
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildProgressIndicator(),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        side: const BorderSide(color: Color(0xFFB0BEC5)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        backgroundColor: Colors.white,
+                      ),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF546E7A),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _submitting ? null : _submit,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2F8F46),
+                        disabledBackgroundColor: const Color(0xFFB0BEC5),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        elevation: 6,
+                        shadowColor: const Color(0xFF2F8F46).withOpacity(0.35),
+                      ),
+                      child: _submitting
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text(
+                              'Submit',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusIcon(bool completed, Color accent) {
+    if (completed) {
+      return Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: accent.withOpacity(0.18),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.check, size: 16, color: accent),
+      );
+    }
+    return Container(
+      padding: const EdgeInsets.all(6),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        shape: BoxShape.circle,
+      ),
+      child: Icon(Icons.camera_alt_outlined, size: 16, color: Colors.grey.shade500),
     );
   }
 
@@ -236,101 +274,138 @@ class _IdsCameraPageState extends State<IdsCameraPage> {
     }
   }
 
+  Widget _buildIntro({required String title, required String subtitle}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF1B4332),
+            letterSpacing: 0.3,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          subtitle,
+          style: TextStyle(
+            fontSize: 13,
+            height: 1.3,
+            color: Colors.grey.shade600,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCaptureCard(
     String title,
     String description,
     IconData icon,
     String? filename,
-    Future<void> Function() onTap,
-  ) {
-    final isCaptured = filename != null;
+    Future<void> Function() onTap, {
+    Color accent = const Color(0xFF2F8F46),
+  }) {
+    final capturedName = filename;
+    final isCaptured = capturedName != null;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(20),
       child: Container(
         decoration: BoxDecoration(
-          color: isCaptured ? Colors.green.shade50 : Colors.grey.shade50,
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isCaptured ? Colors.green.shade300 : Colors.grey.shade300,
-            width: 2,
+            color: isCaptured ? accent.withOpacity(0.45) : Colors.transparent,
+            width: 1.4,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
+        padding: const EdgeInsets.fromLTRB(16, 16, 18, 18),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: isCaptured ? Colors.green.shade100 : Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: isCaptured ? Colors.green.shade700 : Colors.grey.shade600,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: accent.withOpacity(isCaptured ? 0.18 : 0.1),
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(
+                icon,
+                color: accent,
+                size: 26,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF1B4332),
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
+                      _buildStatusIcon(isCaptured, accent),
                     ],
                   ),
-                ),
-                if (isCaptured)
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green.shade700,
-                    size: 24,
-                  )
-                else
-                  Icon(
-                    Icons.camera_alt_outlined,
-                    color: Colors.grey.shade400,
-                    size: 24,
+                  const SizedBox(height: 6),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: Colors.grey.shade600,
+                      height: 1.3,
+                    ),
                   ),
-              ],
-            ),
-            if (isCaptured) ...[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  filename,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.green.shade700,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                  if (capturedName != null) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: accent.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.insert_photo_outlined, size: 16, color: accent),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              capturedName,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: accent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ],
+            ),
           ],
         ),
       ),

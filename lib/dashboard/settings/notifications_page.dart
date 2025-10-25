@@ -17,22 +17,25 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5FAF7),
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF5FAF7),
         elevation: 0,
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          color: const Color(0xFF1B5E20),
+          onPressed: () => Navigator.of(context).maybePop(),
+        ),
         title: const Text(
           'Notifications',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.w800,
-            color: Colors.black87,
-            letterSpacing: 0.3,
+            color: Color(0xFF1B5E20),
+            letterSpacing: 0.4,
           ),
         ),
-        centerTitle: false,
-        iconTheme: const IconThemeData(color: Colors.black87),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -50,22 +53,25 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             ),
             const SizedBox(height: 12),
             _switchTile(
-              'Push Notifications',
-              _push,
-              (v) => setState(() => _push = v),
-              Icons.notifications_active_outlined,
+              title: 'Push Notifications',
+              value: _push,
+              icon: Icons.notifications_active_outlined,
+              description: 'Enabled',
+              onChanged: (v) => setState(() => _push = v),
             ),
             _switchTile(
-              'Sound',
-              _sound,
-              (v) => setState(() => _sound = v),
-              Icons.volume_up_outlined,
+              title: 'Sound',
+              value: _sound,
+              icon: Icons.volume_up_outlined,
+              description: 'Enabled',
+              onChanged: (v) => setState(() => _sound = v),
             ),
             _switchTile(
-              'Vibration',
-              _vibrate,
-              (v) => setState(() => _vibrate = v),
-              Icons.vibration,
+              title: 'Vibration',
+              value: _vibrate,
+              icon: Icons.vibration,
+              description: 'Disabled',
+              onChanged: (v) => setState(() => _vibrate = v),
             ),
             const SizedBox(height: 24),
             Text(
@@ -79,14 +85,14 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
             ),
             const SizedBox(height: 12),
             _selectTile(
-              'Reminder Frequency',
-              _reminder,
-              const [
+              title: 'Reminder Frequency',
+              current: _reminder,
+              options: const [
                 'Daily',
                 'Weekly',
                 'Custom',
               ],
-              (v) => setState(() => _reminder = v),
+              onChanged: (v) => setState(() => _reminder = v),
             ),
             const SizedBox(height: 24),
           ],
@@ -95,150 +101,175 @@ class _NotificationsSettingsPageState extends State<NotificationsSettingsPage> {
     );
   }
 
-  Widget _switchTile(
-    String title,
-    bool value,
-    ValueChanged<bool> onChanged,
-    IconData icon,
-  ) => Container(
-    margin: const EdgeInsets.only(bottom: 12),
-    padding: const EdgeInsets.all(14),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(
-        color: Colors.grey.shade200,
-        width: 1,
+  Widget _switchTile({
+    required String title,
+    required bool value,
+    required IconData icon,
+    required String description,
+    required ValueChanged<bool> onChanged,
+  }) {
+    final Color accent = value ? const Color(0xFF2F8F46) : Colors.grey.shade400;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.04),
-          blurRadius: 6,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    ),
-    child: Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2F8F46).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: accent.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              icon,
+              color: accent,
+              size: 24,
+            ),
           ),
-          child: Icon(
-            icon,
-            color: const Color(0xFF2F8F46),
-            size: 24,
-          ),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1B4332),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                value ? 'Enabled' : 'Disabled',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
+                const SizedBox(height: 4),
+                Text(
+                  value ? description : 'Disabled',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: value ? const Color(0xFF2F8F46) : Colors.grey.shade500,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        Switch(
-          value: value,
-          activeThumbColor: const Color(0xFF2F8F46),
-          onChanged: onChanged,
-        ),
-      ],
-    ),
-  );
+          Switch.adaptive(
+            value: value,
+            activeColor: Colors.white,
+            activeTrackColor: const Color(0xFF2F8F46),
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: Colors.grey.shade400,
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+    );
+  }
 
-  Widget _selectTile(
-    String title,
-    String current,
-    List<String> options,
-    ValueChanged<String> onChanged,
-  ) => Container(
-    margin: const EdgeInsets.only(bottom: 12),
-    padding: const EdgeInsets.all(14),
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(14),
-      border: Border.all(
-        color: Colors.grey.shade200,
-        width: 1,
+  Widget _selectTile({
+    required String title,
+    required String current,
+    required List<String> options,
+    required ValueChanged<String> onChanged,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.04),
-          blurRadius: 6,
-          offset: const Offset(0, 2),
-        ),
-      ],
-    ),
-    child: Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: const Color(0xFF2F8F46).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFF2F8F46).withOpacity(0.12),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.schedule,
+              color: Color(0xFF2F8F46),
+              size: 24,
+            ),
           ),
-          child: const Icon(
-            Icons.schedule,
-            color: Color(0xFF2F8F46),
-            size: 24,
-          ),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1B4332),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                'Current: $current',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
+                const SizedBox(height: 4),
+                Text(
+                  'Current: $current',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF3E7C4B),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        DropdownButton<String>(
-          value: current,
-          underline: const SizedBox.shrink(),
-          items: options
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
-          onChanged: (v) {
-            if (v != null) onChanged(v);
-          },
-        ),
-      ],
-    ),
-  );
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE8F5E9),
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: current,
+                icon: const Icon(
+                  Icons.expand_more,
+                  color: Color(0xFF1B5E20),
+                ),
+                items: options
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(
+                          e,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1B5E20),
+                          ),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) onChanged(v);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
