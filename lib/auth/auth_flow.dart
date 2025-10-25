@@ -108,7 +108,8 @@ class _SignInPageState extends State<SignInPage> {
                       width: 420,
                       height: 420,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
                     ),
                   ),
                 ),
@@ -127,10 +128,26 @@ class _SignInPageState extends State<SignInPage> {
                     child: ColorFiltered(
                       colorFilter: const ColorFilter.matrix(
                         [
-                          0.299, 0.587, 0.114, 0, 0,
-                          0.299, 0.587, 0.114, 0, 0,
-                          0.299, 0.587, 0.114, 0, 0,
-                          0, 0, 0, 1, 0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0,
+                          0,
+                          0,
+                          1,
+                          0,
                         ],
                       ),
                       child: Image.asset(
@@ -138,7 +155,8 @@ class _SignInPageState extends State<SignInPage> {
                         width: 450,
                         height: 450,
                         fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const SizedBox.shrink(),
                       ),
                     ),
                   ),
@@ -151,7 +169,7 @@ class _SignInPageState extends State<SignInPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 10),
                   // Sign In text
                   const Text(
                     'Sign In',
@@ -164,7 +182,7 @@ class _SignInPageState extends State<SignInPage> {
                       height: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   const Text(
                     'Enter your credentials to access CaneMap',
                     textAlign: TextAlign.left,
@@ -209,7 +227,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 14),
 
                   // Password field
                   TextField(
@@ -300,7 +318,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Error message
                   if (_error != null) ...[
@@ -319,7 +337,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 12),
                   ],
 
                   // Sign In button
@@ -333,8 +351,7 @@ class _SignInPageState extends State<SignInPage> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                         elevation: 4,
-                        shadowColor:
-                            const Color(0xFF2F8F46).withOpacity(0.3),
+                        shadowColor: const Color(0xFF2F8F46).withOpacity(0.3),
                       ),
                       onPressed: _loading
                           ? null
@@ -353,18 +370,17 @@ class _SignInPageState extends State<SignInPage> {
                                 // ignore: use_build_context_synchronously
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (_) =>
-                                        const LandingDashboard(),
+                                    builder: (_) => const LandingDashboard(),
                                   ),
                                 );
                               } on FirebaseAuthException catch (e) {
                                 setState(
-                                  () => _error =
-                                      e.message ?? 'Login failed',
+                                  () => _error = e.message ?? 'Login failed',
                                 );
                               } finally {
-                                if (mounted)
+                                if (mounted) {
                                   setState(() => _loading = false);
+                                }
                               }
                             },
                       child: _loading
@@ -386,7 +402,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 6),
 
                   // Google Sign-In button
                   SizedBox(
@@ -459,7 +475,7 @@ class WaveClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     final path = Path();
     path.lineTo(0, size.height * 0.7);
-    
+
     final firstControlPoint = Offset(size.width * 0.25, size.height * 0.9);
     final firstEndPoint = Offset(size.width * 0.5, size.height * 0.8);
     path.quadraticBezierTo(
@@ -468,7 +484,7 @@ class WaveClipper extends CustomClipper<Path> {
       firstEndPoint.dx,
       firstEndPoint.dy,
     );
-    
+
     final secondControlPoint = Offset(size.width * 0.75, size.height * 0.7);
     final secondEndPoint = Offset(size.width, size.height * 0.85);
     path.quadraticBezierTo(
@@ -477,7 +493,7 @@ class WaveClipper extends CustomClipper<Path> {
       secondEndPoint.dx,
       secondEndPoint.dy,
     );
-    
+
     path.lineTo(size.width, 0);
     path.close();
     return path;
@@ -615,7 +631,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       width: 420,
                       height: 420,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
                     ),
                   ),
                 ),
@@ -634,10 +651,26 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: ColorFiltered(
                       colorFilter: const ColorFilter.matrix(
                         [
-                          0.299, 0.587, 0.114, 0, 0,
-                          0.299, 0.587, 0.114, 0, 0,
-                          0.299, 0.587, 0.114, 0, 0,
-                          0, 0, 0, 1, 0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0.299,
+                          0.587,
+                          0.114,
+                          0,
+                          0,
+                          0,
+                          0,
+                          0,
+                          1,
+                          0,
                         ],
                       ),
                       child: Image.asset(
@@ -645,7 +678,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         width: 450,
                         height: 450,
                         fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                        errorBuilder: (context, error, stackTrace) =>
+                            const SizedBox.shrink(),
                       ),
                     ),
                   ),
@@ -671,7 +705,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 1.2,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   const Text(
                     'Join CaneMap and start managing your sugarcane fields digitally.',
                     textAlign: TextAlign.left,
@@ -703,9 +737,10 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: _dec('Full name', icon: Icons.person_outline),
+                          decoration:
+                              _dec('Full name', icon: Icons.person_outline),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                         TextFormField(
                           controller: _emailCtrl,
                           focusNode: _emailFocus,
@@ -726,7 +761,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: _dec('Email', icon: Icons.mail_outline),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 6),
                         TextFormField(
                           controller: _phoneCtrl,
                           focusNode: _phoneFocus,
@@ -764,7 +799,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             icon: Icons.lock_outline,
                             suffix: IconButton(
                               icon: Icon(
-                                _obscure1 ? Icons.visibility_off : Icons.visibility,
+                                _obscure1
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                               ),
                               onPressed: () =>
                                   setState(() => _obscure1 = !_obscure1),
@@ -793,7 +830,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             icon: Icons.lock_outline,
                             suffix: IconButton(
                               icon: Icon(
-                                _obscure2 ? Icons.visibility_off : Icons.visibility,
+                                _obscure2
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                               ),
                               onPressed: () =>
                                   setState(() => _obscure2 = !_obscure2),
@@ -805,7 +844,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           children: [
                             Checkbox(
                               value: _agree,
-                              onChanged: (v) => setState(() => _agree = v ?? false),
+                              onChanged: (v) =>
+                                  setState(() => _agree = v ?? false),
                               activeColor: const Color(0xFF2F8F46),
                             ),
                             const Expanded(
@@ -853,8 +893,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               elevation: 6,
-                              shadowColor:
-                                  const Color(0xFF2F8F46).withValues(alpha: 0.4),
+                              shadowColor: const Color(0xFF2F8F46)
+                                  .withValues(alpha: 0.4),
                               disabledBackgroundColor: Colors.grey.shade300,
                             ),
                             onPressed: _agree && !_loading ? _submit : null,
@@ -934,7 +974,7 @@ class ConfirmEmailPage extends StatelessWidget {
                     'some@email.com',
                     style: TextStyle(color: Colors.green),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 80),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF2F8F46),
@@ -970,122 +1010,180 @@ class WelcomeChoicePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previewButtonStyle = OutlinedButton.styleFrom(
+      foregroundColor: Colors.white,
+      side: const BorderSide(color: Color(0xFFB8E0C3)),
+      backgroundColor: Colors.white.withOpacity(0.08),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22),
+      ),
+      textStyle: const TextStyle(fontWeight: FontWeight.w600),
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              // Top area: optional illustration
-              Expanded(
-                child: Center(
-                  child: Image.asset(
-                    'assets/images/Mockup.png',
-                    width: 260,
-                    fit: BoxFit.contain,
-                    errorBuilder: (c, e, s) => const SizedBox.shrink(),
-                  ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/weather1.jpg',
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              color: const Color(0x33000000),
+              colorBlendMode: BlendMode.darken,
+            ),
+          ),
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0xC0153921),
+              ),
+            ),
+          ),
+          const Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0x80112E1A),
+                    Color(0x40112E1A),
+                    Color(0x00112E1A),
+                  ],
                 ),
               ),
-              const SizedBox(height: 8),
-              const Text(
-                "Let's get started",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Register now and digitize your sugarcane farming experience.',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13, color: Colors.black54),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2F8F46),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () => _openLogin(context),
-                    child: const Text('Login'),
-                  ),
-                  const SizedBox(width: 12),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xFF2F8F46)),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 18,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    onPressed: () => _openRegister(context),
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(color: Color(0xFF2F8F46)),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Preview dashboards',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                alignment: WrapAlignment.center,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const HandlerDashboard(),
-                        ),
-                      );
-                    },
-                    child: const Text('Handler'),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const WorkerDashboard(),
-                        ),
-                      );
-                    },
-                    child: const Text('Worker'),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const DriverDashboard(),
-                        ),
-                      );
-                    },
-                    child: const Text('Worker + Driver Badge'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 28),
-            ],
+            ),
           ),
-        ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 140),
+                  Text(
+                    'The smart',
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      height: 1.15,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'way to',
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      height: 1.15,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'map your farms',
+                    style: const TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      height: 1.15,
+                      letterSpacing: 0.4,
+                    ),
+                  ),
+                  const SizedBox(height: 108),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.22),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 14,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () => _openLogin(context),
+                      child: const Text(
+                        'Sign in',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white.withOpacity(0.85),
+                        textStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                      onPressed: () => _openRegister(context),
+                      child: const Text('Create an account'),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    alignment: WrapAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        style: previewButtonStyle,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const HandlerDashboard(),
+                            ),
+                          );
+                        },
+                        child: const Text('Handler'),
+                      ),
+                      OutlinedButton(
+                        style: previewButtonStyle,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const WorkerDashboard(),
+                            ),
+                          );
+                        },
+                        child: const Text('Worker'),
+                      ),
+                      OutlinedButton(
+                        style: previewButtonStyle,
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => const DriverDashboard(),
+                            ),
+                          );
+                        },
+                        child: const Text('Worker + Driver Badge'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

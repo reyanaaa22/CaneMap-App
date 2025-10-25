@@ -21,35 +21,35 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       title: 'Track Your Sugarcane Fields',
       subtitle:
           'View, monitor, and update your fields in real-time using the interactive map.',
-      imageAsset: 'assets/images/Track.png',
+      imageAsset: 'assets/images/Onboarding 1.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Submit Reports Without the Paperwork',
       subtitle:
           'No more scattered messages. CaneMap organizes field updates, photo logs, and validation reports — all in one place.',
-      imageAsset: 'assets/images/Reports.png',
+      imageAsset: 'assets/images/Onboarding 2.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Custom Dashboards per Role',
       subtitle:
           'Landowners, Farmers, MFOs, and Admins each get personalized access to features relevant to their work.',
-      imageAsset: 'assets/images/Dashboard.png',
+      imageAsset: 'assets/images/Onboarding 3.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Estimate Harvest with Confidence',
       subtitle:
           'Estimate and plan harvests using field summaries, sensor inputs, and historical yields.',
-      imageAsset: 'assets/images/Estimate.png',
+      imageAsset: 'assets/images/Onboarding 4.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Visual Mapping by Barangay and Field',
       subtitle:
           'Easily visualize fields and map work by area for faster coordination and better decisions.',
-      imageAsset: 'assets/images/mapping.png',
+      imageAsset: 'assets/images/Onboarding 5.png',
       backgroundGreen: false,
     ),
   ];
@@ -119,7 +119,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DotsIndicator(count: _pages.length, index: _index),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: SizedBox(
@@ -201,8 +201,27 @@ class _OnboardPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Column(
               children: [
+                const SizedBox(height: 120),
+                AnimatedPageTransition(
+                  pageIndex: pageIndex,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        data.title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w800,
+                          color: isGreen ? Colors.white : titleColor,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
                 Expanded(
-                  flex: 6,
                   child: Center(
                     child: data.imageAsset != null
                         ? Image.asset(
@@ -219,38 +238,24 @@ class _OnboardPage extends StatelessWidget {
                           ),
                   ),
                 ),
-                Expanded(
-                  flex: 4,
-                  child: AnimatedPageTransition(
-                    pageIndex: pageIndex,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          data.title,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800,
-                            color: isGreen ? Colors.white : titleColor,
-                            letterSpacing: 0.3,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          data.subtitle,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            height: 1.6,
-                            color: isGreen ? Colors.white70 : subtitleColor,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                const SizedBox(height: 16),
+                AnimatedPageTransition(
+                  pageIndex: pageIndex,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      data.subtitle,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        height: 1.6,
+                        color: isGreen ? Colors.white70 : subtitleColor,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 32),
               ],
             ),
           ),

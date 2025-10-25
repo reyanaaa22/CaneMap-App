@@ -46,11 +46,11 @@ class _AnimatedBackgroundShapesState extends State<AnimatedBackgroundShapes>
   @override
   Widget build(BuildContext context) {
     final accentColor = widget.isGreen
-        ? Colors.white.withOpacity(0.25)
-        : const Color(0xFF2F8F46).withOpacity(0.15);
+        ? const Color(0xFF1F4B2C).withOpacity(0.38)
+        : const Color(0xFF1E6B3A).withOpacity(0.26);
     final accentColor2 = widget.isGreen
-        ? Colors.white.withOpacity(0.2)
-        : const Color(0xFF7CCF00).withOpacity(0.12);
+        ? const Color(0xFF27653A).withOpacity(0.32)
+        : const Color(0xFF3B8D22).withOpacity(0.22);
 
     return Stack(
       children: [
