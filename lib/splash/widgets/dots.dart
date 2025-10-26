@@ -7,6 +7,7 @@ class DotsIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const baseColor = Color(0xFF2F8F46);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(count, (i) {
@@ -17,7 +18,7 @@ class DotsIndicator extends StatelessWidget {
           width: active ? 10 : 6,
           height: 6,
           decoration: BoxDecoration(
-            color: active ? Colors.white : Colors.white70,
+            color: active ? baseColor : baseColor.withOpacity(0.28),
             borderRadius: BorderRadius.circular(3),
           ),
         );

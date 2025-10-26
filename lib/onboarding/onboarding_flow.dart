@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../splash/widgets/dots.dart';
 import '../auth/auth_flow.dart';
 import 'animated_shapes.dart';
 
@@ -114,15 +113,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             Positioned(
               left: 0,
               right: 0,
-              bottom: 32,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DotsIndicator(count: _pages.length, index: _index),
-                  const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: SizedBox(
+              bottom: 16,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -157,8 +155,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -201,7 +199,7 @@ class _OnboardPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Column(
               children: [
-                const SizedBox(height: 120),
+                const SizedBox(height: 44),
                 AnimatedPageTransition(
                   pageIndex: pageIndex,
                   child: Column(
@@ -211,51 +209,58 @@ class _OnboardPage extends StatelessWidget {
                         data.title,
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 28,
+                          fontSize: 24,
                           fontWeight: FontWeight.w800,
                           color: isGreen ? Colors.white : titleColor,
                           letterSpacing: 0.3,
                         ),
                       ),
+                      const SizedBox(height: 2),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Expanded(
-                  child: Center(
-                    child: data.imageAsset != null
-                        ? Image.asset(
-                            data.imageAsset!,
-                            fit: BoxFit.contain,
-                            width: 320,
-                            height: 320,
-                          )
-                        : _OnboardLottie(
-                            url:
-                                'https://lottie.host/96d03853-13ae-407b-8bc6-e6f78f8420b7/kyZx1zxJqy.lottie',
-                            speed: 3.0,
-                            backgroundGreen: isGreen,
-                          ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                AnimatedPageTransition(
-                  pageIndex: pageIndex,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      data.subtitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        height: 1.6,
-                        color: isGreen ? Colors.white70 : subtitleColor,
-                        fontWeight: FontWeight.w500,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: data.imageAsset != null
+                              ? Image.asset(
+                                  data.imageAsset!,
+                                  fit: BoxFit.contain,
+                                  width: 320,
+                                  height: 320,
+                                )
+                              : _OnboardLottie(
+                                  url:
+                                      'https://lottie.host/96d03853-13ae-407b-8bc6-e6f78f8420b7/kyZx1zxJqy.lottie',
+                                  speed: 3.0,
+                                  backgroundGreen: isGreen,
+                                ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      AnimatedPageTransition(
+                        pageIndex: pageIndex,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text(
+                            data.subtitle,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              height: 1.6,
+                              color: isGreen ? Colors.white70 : subtitleColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 72),
               ],
             ),
           ),

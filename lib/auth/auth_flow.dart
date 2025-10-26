@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../dashboard/handler_dashboard.dart';
 import '../dashboard/worker_dashboard.dart';
 import '../dashboard/driver_dashboard.dart';
@@ -199,31 +200,38 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
-                      hintText: 'Email',
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(
+                        color: Color(0xFF5D6F64),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      floatingLabelStyle: const TextStyle(
+                        color: Color(0xFF2F8F46),
+                        fontWeight: FontWeight.w700,
                       ),
                       filled: true,
                       fillColor: const Color(0xFFF6FAF7),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+                        gapPadding: 6,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+                        gapPadding: 6,
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(18),
                         borderSide: const BorderSide(
                           color: Color(0xFF2F8F46),
-                          width: 1.5,
+                          width: 2,
                         ),
+                        gapPadding: 6,
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 14,
                       ),
                     ),
                   ),
@@ -234,41 +242,48 @@ class _SignInPageState extends State<SignInPage> {
                     controller: _passwordController,
                     obscureText: _obscure,
                     decoration: InputDecoration(
-                      hintText: 'Password',
-                      hintStyle: const TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(
+                        color: Color(0xFF5D6F64),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      floatingLabelStyle: const TextStyle(
+                        color: Color(0xFF2F8F46),
+                        fontWeight: FontWeight.w700,
                       ),
                       filled: true,
                       fillColor: const Color(0xFFF6FAF7),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+                        gapPadding: 6,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+                        gapPadding: 6,
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(18),
                         borderSide: const BorderSide(
                           color: Color(0xFF2F8F46),
-                          width: 1.5,
+                          width: 2,
+                        ),
+                        gapPadding: 6,
+                      ),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: _PasswordToggle(
+                          obscured: _obscure,
+                          onPressed: () =>
+                              setState(() => _obscure = !_obscure),
                         ),
                       ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscure
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          color: const Color(0xFF2F8F46),
-                          size: 20,
-                        ),
-                        onPressed: () => setState(() => _obscure = !_obscure),
-                      ),
+                      suffixIconConstraints:
+                          const BoxConstraints(minWidth: 0, minHeight: 0),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 16,
+                        vertical: 14,
                       ),
                     ),
                   ),
@@ -351,7 +366,8 @@ class _SignInPageState extends State<SignInPage> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                         elevation: 4,
-                        shadowColor: const Color(0xFF2F8F46).withOpacity(0.3),
+                        shadowColor:
+                            const Color(0xFF2F8F46).withValues(alpha: 0.3),
                       ),
                       onPressed: _loading
                           ? null
@@ -402,7 +418,26 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: const [
+                      Expanded(child: Divider(color: Color(0xFFDCE9E1), thickness: 1)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          'OR',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF6B8573),
+                            letterSpacing: 0.4,
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: Color(0xFFDCE9E1), thickness: 1)),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
 
                   // Google Sign-In button
                   SizedBox(
@@ -418,13 +453,25 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                       onPressed: _loading ? null : _signInWithGoogle,
-                      child: const Text(
-                        'Sign in with Google',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF2F8F46),
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/google_logo.svg',
+                            height: 22,
+                            width: 22,
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Sign in with Google',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF2F8F46),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -569,17 +616,16 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  InputDecoration _dec(String label, {IconData? icon, Widget? suffix}) =>
+  InputDecoration _dec(String label, {Widget? suffix}) =>
       InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(
           color: Colors.black54,
           fontWeight: FontWeight.w500,
         ),
-        prefixIcon: icon != null
-            ? Icon(icon, color: const Color(0xFF2F8F46), size: 20)
-            : null,
         suffixIcon: suffix,
+        suffixIconConstraints:
+            const BoxConstraints(minWidth: 0, minHeight: 0),
         filled: true,
         fillColor: const Color(0xFFF6FAF7),
         contentPadding: const EdgeInsets.symmetric(
@@ -737,8 +783,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration:
-                              _dec('Full name', icon: Icons.person_outline),
+                          decoration: _dec('Full name'),
                         ),
                         const SizedBox(height: 8),
                         TextFormField(
@@ -759,7 +804,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: _dec('Email', icon: Icons.mail_outline),
+                          decoration: _dec('Email'),
                         ),
                         const SizedBox(height: 6),
                         TextFormField(
@@ -778,7 +823,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             return null;
                           },
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: _dec('Phone', icon: Icons.phone_iphone),
+                          decoration: _dec('Phone'),
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
@@ -796,15 +841,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: _dec(
                             'Password',
-                            icon: Icons.lock_outline,
-                            suffix: IconButton(
-                              icon: Icon(
-                                _obscure1
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                            suffix: Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: _PasswordToggle(
+                                obscured: _obscure1,
+                                onPressed: () => setState(
+                                  () => _obscure1 = !_obscure1,
+                                ),
                               ),
-                              onPressed: () =>
-                                  setState(() => _obscure1 = !_obscure1),
                             ),
                           ),
                         ),
@@ -827,15 +871,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           decoration: _dec(
                             'Confirm password',
-                            icon: Icons.lock_outline,
-                            suffix: IconButton(
-                              icon: Icon(
-                                _obscure2
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                            suffix: Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: _PasswordToggle(
+                                obscured: _obscure2,
+                                onPressed: () => setState(
+                                  () => _obscure2 = !_obscure2,
+                                ),
                               ),
-                              onPressed: () =>
-                                  setState(() => _obscure2 = !_obscure2),
                             ),
                           ),
                         ),
@@ -913,6 +956,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       fontWeight: FontWeight.w700,
                                       fontSize: 16,
                                       letterSpacing: 0.5,
+                                      color: Colors.white,
                                     ),
                                   ),
                           ),
@@ -929,7 +973,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         child: const Text(
-                          'Login',
+                          'Sign in',
                           style: TextStyle(color: Color(0xFF2F8F46)),
                         ),
                       ),
@@ -939,6 +983,54 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PasswordToggle extends StatelessWidget {
+  const _PasswordToggle({
+    required this.obscured,
+    required this.onPressed,
+  });
+
+  final bool obscured;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = obscured
+        ? Icons.visibility_off_outlined
+        : Icons.visibility_outlined;
+
+    return SizedBox(
+      width: 36,
+      height: 36,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(18),
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: const Color(0xFFE7EFE9),
+              shape: BoxShape.circle,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x14000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              size: 18,
+              color: const Color(0xFF3A473D),
+            ),
+          ),
         ),
       ),
     );
@@ -1013,7 +1105,7 @@ class WelcomeChoicePage extends StatelessWidget {
     final previewButtonStyle = OutlinedButton.styleFrom(
       foregroundColor: Colors.white,
       side: const BorderSide(color: Color(0xFFB8E0C3)),
-      backgroundColor: Colors.white.withOpacity(0.08),
+      backgroundColor: Colors.white.withValues(alpha: 0.08),
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
@@ -1101,7 +1193,8 @@ class WelcomeChoicePage extends StatelessWidget {
                     width: double.infinity,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.22),
+                        backgroundColor:
+                            Colors.white.withValues(alpha: 0.22),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
@@ -1126,7 +1219,8 @@ class WelcomeChoicePage extends StatelessWidget {
                   Center(
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.white.withOpacity(0.85),
+                        foregroundColor:
+                            Colors.white.withValues(alpha: 0.85),
                         textStyle: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -1196,64 +1290,229 @@ class ResetPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final fieldDecoration = InputDecoration(
+      labelText: 'Email address',
+      labelStyle: const TextStyle(
+        color: Color(0xFF5D6F64),
+        fontWeight: FontWeight.w600,
+      ),
+      floatingLabelStyle: const TextStyle(
+        color: Color(0xFF2F8F46),
+        fontWeight: FontWeight.w700,
+      ),
+      filled: true,
+      fillColor: const Color(0xFFF6FAF7),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+        gapPadding: 6,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Color(0xFFD3E3D9)),
+        gapPadding: 6,
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: Color(0xFF2F8F46), width: 2),
+        gapPadding: 6,
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.arrow_back),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Forgot your password?',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: _emailCtrl,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(labelText: 'Email address'),
-              ),
-              const SizedBox(height: 24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2F8F46),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+              top: -40,
+              right: -200,
+              child: Opacity(
+                opacity: 0.45,
+                child: Transform.rotate(
+                  angle: -0.35,
+                  child: Transform.scale(
+                    scaleX: -1,
+                    child: Image.asset(
+                      'assets/images/sugar.jpg',
+                      width: 360,
+                      height: 360,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const SizedBox.shrink(),
+                    ),
                   ),
-                  onPressed: () async {
-                    final email = _emailCtrl.text.trim();
-                    if (email.isEmpty) return;
-                    try {
-                      await FirebaseAuth.instance.sendPasswordResetEmail(
-                        email: email,
-                      );
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Password reset email sent'),
-                        ),
-                      );
-                    } on FirebaseAuthException catch (e) {
-                      // ignore: use_build_context_synchronously
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(e.message ?? 'Failed to send email'),
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Continue'),
                 ),
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              bottom: -320,
+              left: -240,
+              child: Opacity(
+                opacity: 0.2,
+                child: Transform.rotate(
+                  angle: 0.3,
+                  child: Image.asset(
+                    'assets/images/sugar.jpg',
+                    width: 420,
+                    height: 420,
+                    fit: BoxFit.contain,
+                    color: Colors.black.withValues(alpha: 0.15),
+                    colorBlendMode: BlendMode.srcATop,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const SizedBox.shrink(),
+                  ),
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      visualDensity: VisualDensity.compact,
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: Color(0xFF2F8F46),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Forgot your password?',
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF2F5E1F),
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Don’t worry! Enter the email associated with your account and we’ll send reset instructions right away.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: 28),
+                  TextField(
+                    controller: _emailCtrl,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: fieldDecoration,
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF2F8F46),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        elevation: 8,
+                        shadowColor:
+                            const Color(0xFF2F8F46).withValues(alpha: 0.35),
+                      ),
+                      onPressed: () async {
+                        final email = _emailCtrl.text.trim();
+                        if (email.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please enter your email address'),
+                            ),
+                          );
+                          return;
+                        }
+                        FocusScope.of(context).unfocus();
+                        try {
+                          await FirebaseAuth.instance.sendPasswordResetEmail(
+                            email: email,
+                          );
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: const Color(0xFF2F8F46),
+                              content: Text(
+                                'Check $email for reset instructions.',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        } on FirebaseAuthException catch (e) {
+                          // ignore: use_build_context_synchronously
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red.shade600,
+                              content: Text(
+                                e.message ?? 'Failed to send email',
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text(
+                        'Send reset link',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    'Tip: Check your spam folder if you don’t see the email within a few minutes.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF6B8573),
+                      height: 1.4,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Text(
+                        'Remembered your password? ',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(0, 0),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: const Text(
+                          'Sign in',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF2F8F46),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
