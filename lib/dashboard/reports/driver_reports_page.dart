@@ -45,7 +45,8 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
   Widget build(BuildContext context) {
     final totalHours = _trips.fold<double>(0.0, (sum, trip) {
       final hours = trip['hours'];
-      return sum + (hours is double ? hours : (hours is int ? hours.toDouble() : 0.0));
+      return sum +
+          (hours is double ? hours : (hours is int ? hours.toDouble() : 0.0));
     });
     final avgDaily = totalHours / 4.0;
 
@@ -134,7 +135,8 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color:
+                Colors.black.withValues(red: 0, green: 0, blue: 0, alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -197,10 +199,18 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
+        color: color.withValues(
+            red: color.red / 255,
+            green: color.green / 255,
+            blue: color.blue / 255,
+            alpha: 0.08),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: color.withOpacity(0.15),
+          color: color.withValues(
+              red: color.red / 255,
+              green: color.green / 255,
+              blue: color.blue / 255,
+              alpha: 0.15),
         ),
       ),
       child: Column(
@@ -209,7 +219,7 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
           Icon(icon, color: color, size: 20),
           const SizedBox(height: 8),
           Text(
-            value ?? 'N/A',
+            value,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
@@ -218,7 +228,7 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
           ),
           const SizedBox(height: 2),
           Text(
-            label ?? 'N/A',
+            label,
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w600,
@@ -276,7 +286,8 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color:
+                Colors.black.withValues(red: 0, green: 0, blue: 0, alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 1),
           ),
@@ -298,7 +309,8 @@ class _DriverReportsPageState extends State<DriverReportsPage> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2F8F46).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),

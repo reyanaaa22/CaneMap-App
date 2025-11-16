@@ -20,35 +20,35 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       title: 'Track Your Sugarcane Fields',
       subtitle:
           'View, monitor, and update your fields in real-time using the interactive map.',
-      imageAsset: 'assets/images/Onboarding 1.png',
+      imageAsset: 'assets/images/Onboarding_1.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Submit Reports Without the Paperwork',
       subtitle:
           'No more scattered messages. CaneMap organizes field updates, photo logs, and validation reports — all in one place.',
-      imageAsset: 'assets/images/Onboarding 2.png',
+      imageAsset: 'assets/images/Onboarding_2.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Custom Dashboards per Role',
       subtitle:
           'Landowners, Farmers, MFOs, and Admins each get personalized access to features relevant to their work.',
-      imageAsset: 'assets/images/Onboarding 3.png',
+      imageAsset: 'assets/images/Onboarding_3.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Estimate Harvest with Confidence',
       subtitle:
           'Estimate and plan harvests using field summaries, sensor inputs, and historical yields.',
-      imageAsset: 'assets/images/Onboarding 4.png',
+      imageAsset: 'assets/images/Onboarding_4.png',
       backgroundGreen: false,
     ),
     _OnboardPageData(
       title: 'Visual Mapping by Barangay and Field',
       subtitle:
           'Easily visualize fields and map work by area for faster coordination and better decisions.',
-      imageAsset: 'assets/images/Onboarding 5.png',
+      imageAsset: 'assets/images/Onboarding_5.png',
       backgroundGreen: false,
     ),
   ];
@@ -97,7 +97,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               child: TextButton(
                 onPressed: _goHome,
                 style: TextButton.styleFrom(
-                  foregroundColor: isGreen ? Colors.white : const Color(0xFF2F8F46),
+                  foregroundColor:
+                      isGreen ? Colors.white : const Color(0xFF2F8F46),
                 ),
                 child: Text(
                   'Skip',
@@ -189,7 +190,7 @@ class _OnboardPage extends StatelessWidget {
     final isGreen = data.backgroundGreen;
     final titleColor = const Color(0xFF2F5E1F);
     final subtitleColor = Color.fromRGBO(0x31, 0x5D, 0x2B, 0.85);
-    
+
     return Container(
       color: isGreen ? const Color(0xFF62A96B) : Colors.white,
       child: Stack(

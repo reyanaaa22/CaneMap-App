@@ -96,7 +96,7 @@ class _FieldDetailsPageState extends State<FieldDetailsPage> {
               subtitle: 'Specify where your field belongs.',
               children: [
                 DropdownButtonFormField<String>(
-                  value: _barangay,
+                  initialValue: _barangay,
                   isExpanded: true,
                   decoration: _buildInputDecoration('Barangay', icon: Icons.location_city_outlined),
                   items: const [
@@ -109,7 +109,7 @@ class _FieldDetailsPageState extends State<FieldDetailsPage> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: _municipality,
+                  initialValue: _municipality,
                   isExpanded: true,
                   decoration: _buildInputDecoration('City / Municipality', icon: Icons.location_on_outlined),
                   items: const [
@@ -178,7 +178,7 @@ class _FieldDetailsPageState extends State<FieldDetailsPage> {
               subtitle: 'Optional information to complete your profile.',
               children: [
                 DropdownButtonFormField<String>(
-                  value: _variety,
+                  initialValue: _variety,
                   isExpanded: true,
                   decoration: _buildInputDecoration('Crop Variety', icon: Icons.eco_outlined),
                   items: const [
@@ -191,7 +191,7 @@ class _FieldDetailsPageState extends State<FieldDetailsPage> {
                 ),
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: _terrain,
+                  initialValue: _terrain,
                   isExpanded: true,
                   decoration: _buildInputDecoration('Terrain Type', icon: Icons.terrain),
                   items: const [

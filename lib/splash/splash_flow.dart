@@ -26,7 +26,8 @@ class _SplashFlowState extends State<SplashFlow>
     ),
   );
   // Circle scale from tiny (2%) to full cover - continuous smooth expansion
-  late final Animation<double> _circleScale = Tween<double>(begin: 0.02, end: 1.0).animate(
+  late final Animation<double> _circleScale =
+      Tween<double>(begin: 0.02, end: 1.0).animate(
     CurvedAnimation(
       parent: _introCtrl,
       curve: const Interval(0.10, 0.60, curve: Curves.easeInOutCubic),
@@ -246,10 +247,22 @@ class _LogoBrandTransitionState extends State<_LogoBrandTransition>
                     position: _textSlide,
                     child: Transform.translate(
                       offset: const Offset(-12, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [_StaggeredTitle()],
+                      child: const Text(
+                        'CaneMap',
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                          letterSpacing: 1.0,
+                          height: 1.0,
+                          shadows: [
+                            Shadow(
+                              offset: Offset(1, 1),
+                              blurRadius: 4.0,
+                              color: Colors.black26,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -316,29 +329,9 @@ class _LogoWithAccentState extends State<_LogoWithAccent>
   @override
   Widget build(BuildContext context) {
     final size = widget.size;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Soft halo instead of external particle asset
-        Container(
-          width: size * 1.1,
-          height: size * 1.1,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0x7C, 0xCF, 0x00, 0.25),
-                blurRadius: 24,
-                spreadRadius: 6,
-              ),
-            ],
-          ),
-        ),
-        ScaleTransition(
-          scale: _scale,
-          child: _LogoIcon(size: size),
-        ),
-      ],
+    return ScaleTransition(
+      scale: _scale,
+      child: _LogoIcon(size: size),
     );
   }
 }
@@ -409,101 +402,6 @@ class _PulsingLogoState extends State<_PulsingLogo>
           ),
         );
       },
-    );
-  }
-}
-
-class _StaggeredTitle extends StatefulWidget {
-  const _StaggeredTitle();
-  @override
-  State<_StaggeredTitle> createState() => _StaggeredTitleState();
-}
-
-class _StaggeredTitleState extends State<_StaggeredTitle>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _ctrl = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 900),
-  )..forward();
-  late final Animation<double> _fade = CurvedAnimation(
-    parent: _ctrl,
-    curve: Curves.easeIn,
-  );
-  late final Animation<Offset> _slide = Tween(
-    begin: const Offset(0.06, 0),
-    end: Offset.zero,
-  ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fade,
-      child: SlideTransition(
-        position: _slide,
-        child: const Text(
-          'CaneMap',
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StaggeredSubtitle extends StatefulWidget {
-  const _StaggeredSubtitle();
-  @override
-  State<_StaggeredSubtitle> createState() => _StaggeredSubtitleState();
-}
-
-class _StaggeredSubtitleState extends State<_StaggeredSubtitle>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _ctrl = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1100),
-  );
-  late final Animation<double> _fade = CurvedAnimation(
-    parent: _ctrl,
-    curve: const Interval(0.2, 1.0, curve: Curves.easeInOut),
-  );
-  late final Animation<Offset> _slide = Tween(
-    begin: const Offset(0.08, 0),
-    end: Offset.zero,
-  ).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOut));
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 250), () => _ctrl.forward());
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _fade,
-      child: SlideTransition(
-        position: _slide,
-        child: const Text(
-          'Sugarcane mapping and harvest planning',
-          style: TextStyle(fontSize: 13, color: Colors.white70),
-        ),
-      ),
     );
   }
 }
@@ -623,7 +521,8 @@ class _BottomSheetWelcomeState extends State<_BottomSheetWelcome>
           children: List.generate(3, (index) {
             final delay = index * 0.15;
             final progress = (_loadingCtrl.value + delay) % 1.0;
-            final opacity = (math.sin(progress * math.pi) * 0.5 + 0.5).clamp(0.3, 1.0);
+            final opacity =
+                (math.sin(progress * math.pi) * 0.5 + 0.5).clamp(0.3, 1.0);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),

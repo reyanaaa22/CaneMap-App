@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'profile_page.dart';
 import 'help_support_page.dart';
 import 'about_page.dart';
 import 'settings/notifications_page.dart';
 import 'settings/privacy_security_page.dart';
 import 'settings/account_settings_page.dart';
+import 'package:intl/intl.dart';
 
 class MenuPage extends StatefulWidget {
   final VoidCallback? onBack;
@@ -17,241 +19,223 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   bool _darkMode = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFC8E6C9), Color(0xFF81C784)],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildHeader(context),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 34,
-                        backgroundImage: AssetImage('assets/images/logo.png'),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Reyna Marie Boyboy',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black87,
-                                letterSpacing: 0.3,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => const ProfilePage(),
-                                  ),
-                                );
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'View Profile',
-                                    style: TextStyle(
-                                      color: Colors.black87,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Icon(
-                                    Icons.arrow_forward_ios,
-                                    size: 12,
-                                    color: Colors.black54,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 14,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-                            child: Text(
-                              'Settings',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.grey.shade900,
-                                letterSpacing: 0.2,
-                              ),
-                            ),
-                          ),
-                          _buildDarkModeToggle(),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.notifications_outlined,
-                            iconColor: const Color(0xFF424242),
-                            title: 'Notifications',
-                            trailingText: 'On',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const NotificationsSettingsPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.privacy_tip_outlined,
-                            iconColor: const Color(0xFF424242),
-                            title: 'Privacy',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const PrivacySecurityPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.security_outlined,
-                            iconColor: const Color(0xFF424242),
-                            title: 'Security',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const PrivacySecurityPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.person_outline,
-                            iconColor: const Color(0xFF424242),
-                            title: 'Account',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const AccountSettingsPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.help_outline,
-                            iconColor: const Color(0xFF424242),
-                            title: 'Help',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const HelpSupportPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildSettingsTile(
-                            icon: Icons.info_outline,
-                            iconColor: const Color(0xFF424242),
-                            title: 'About',
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const AboutPage(),
-                                ),
-                              );
-                            },
-                          ),
-                          _buildItemDivider(),
-                          _buildLogoutButton(context),
-                          const SizedBox(height: 12),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+  String _getDisplayName(String? fullName) {
+    if (fullName?.trim().isNotEmpty == true) {
+      return fullName!.trim();
+    }
+    return 'User';
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
-        child: SizedBox(
-          height: 40,
-          child: Stack(
-            alignment: Alignment.center,
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    final displayName = _getDisplayName(user?.displayName);
+
+    return Scaffold(
+      backgroundColor: const Color(0xFFF0F7F3),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  splashRadius: 20,
-                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                  color: const Color(0xFF1B5E20),
-                  onPressed: widget.onBack ?? () => Navigator.of(context).maybePop(),
+              _buildHeader(context),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color.fromRGBO(27, 94, 32, 0.2),
+                              width: 2,
+                            ),
+                          ),
+                          child: CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Colors.grey[200],
+                            child: FutureBuilder<Widget>(
+                              future: _buildProfileImage(user),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return snapshot.data ?? _buildDefaultLogo();
+                                }
+                                return _buildDefaultLogo();
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                displayName,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black87,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => const ProfilePage(),
+                                    ),
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      'View Profile',
+                                      style: TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 12,
+                                      color: Colors.black54,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              const Text(
-                'Account Settings',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1B5E20),
-                  letterSpacing: 0.4,
+              const SizedBox(height: 24),
+              // Settings Section
+              _buildSectionHeader('SETTINGS'),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    _buildSettingsTile(
+                      icon: Icons.notifications_outlined,
+                      title: 'Notifications',
+                      trailingText: 'On',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const NotificationsSettingsPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildSettingsTile(
+                      icon: Icons.privacy_tip_outlined,
+                      title: 'Privacy & Security',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const PrivacySecurityPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildSettingsTile(
+                      icon: Icons.person_outline,
+                      title: 'Account',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AccountSettingsPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ),
+
+              // Support Section
+              _buildSectionHeader('SUPPORT'),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    _buildSettingsTile(
+                      icon: Icons.help_outline,
+                      title: 'Help Center',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const HelpSupportPage(),
+                          ),
+                        );
+                      },
+                    ),
+                    _buildSettingsTile(
+                      icon: Icons.info_outline,
+                      title: 'About',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AboutPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // App Settings
+              _buildSectionHeader('APP SETTINGS'),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  children: [
+                    _buildDarkModeToggle(),
+                  ],
+                ),
+              ),
+
+              // Logout Button
+              const SizedBox(height: 8),
+              _buildLogoutButton(context),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -259,67 +243,92 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Logout'),
-              content: const Text('Are you sure you want to logout?'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Logged out successfully'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    // TODO: Implement actual logout logic
-                  },
-                  child: const Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.red),
+  Widget _buildHeader(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+      child: Row(
+        children: [
+          Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: widget.onBack ?? () => Navigator.of(context).pop(),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.grey[200]!,
+                    width: 1,
                   ),
                 ),
-              ],
-            );
-          },
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        child: Row(
-          children: [
-            Icon(
-              Icons.logout_rounded,
-              color: Colors.red.shade500,
-              size: 22,
-            ),
-            const SizedBox(width: 18),
-            Expanded(
-              child: Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.red.shade500,
+                child: const Icon(
+                  Icons.arrow_back_ios_rounded,
+                  size: 18,
+                  color: Colors.black87,
                 ),
               ),
             ),
-            Icon(
-              Icons.chevron_right,
-              size: 22,
-              color: Colors.red.shade300,
+          ),
+          const Spacer(),
+          const Text(
+            'Menu',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: Colors.black87,
+              letterSpacing: 0.5,
             ),
-          ],
+          ),
+          const Spacer(),
+          const SizedBox(width: 48), // For balance
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogoutButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () => _showLogoutDialog(context),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(255, 235, 238, 0.7),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color.fromRGBO(255, 205, 210, 0.5),
+                      width: 1,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.logout_rounded,
+                    color: Color(0xFFD32F2F),
+                    size: 22,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFFD32F2F),
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -327,119 +336,338 @@ class _MenuPageState extends State<MenuPage> {
 
   Widget _buildDarkModeToggle() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: Row(
-        children: [
-          _buildIconBadge(
-            icon: Icons.nightlight_round,
-            backgroundColor: const Color(0xFF263238).withOpacity(0.12),
-            iconColor: const Color(0xFF263238),
-          ),
-          const SizedBox(width: 16),
-          const Expanded(
-            child: Text(
-              'Dark Mode',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: () {
+            setState(() {
+              _darkMode = !_darkMode;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8F5E9).withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFE8F5E9).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: Icon(
+                    _darkMode
+                        ? Icons.dark_mode_rounded
+                        : Icons.light_mode_rounded,
+                    color: const Color(0xFF1B5E20),
+                    size: 22,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                const Text(
+                  'Dark Mode',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+                const Spacer(),
+                Transform.scale(
+                  scale: 0.8,
+                  child: Switch.adaptive(
+                    value: _darkMode,
+                    onChanged: (value) {
+                      setState(() {
+                        _darkMode = value;
+                      });
+                    },
+                    activeThumbColor: const Color(0xFF1B5E20),
+                    activeTrackColor: const Color(0xFFA5D6A7),
+                    activeColor:
+                        const Color(0xFF1B5E20), // For backward compatibility
+                  ),
+                ),
+              ],
             ),
           ),
-          Switch.adaptive(
-            activeColor: const Color(0xFF2F8F46),
-            value: _darkMode,
-            onChanged: (value) {
-              setState(() {
-                _darkMode = value;
-              });
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildSettingsTile({
     required IconData icon,
-    required Color iconColor,
     required String title,
     String? trailingText,
     VoidCallback? onTap,
+    bool showDivider = true,
   }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        child: Row(
-          children: [
-            Icon(icon, color: iconColor, size: 22),
-            const SizedBox(width: 18),
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Color(0xFF212121),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (trailingText != null) ...[
-                  Text(
-                    trailingText,
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.grey.shade500,
+    return Column(
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(232, 245, 233, 0.7),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: const Color.fromRGBO(232, 245, 233, 0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: const Color(0xFF1B5E20),
+                      size: 22,
                     ),
                   ),
-                  const SizedBox(width: 6),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ),
+                  if (trailingText != null)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        trailingText,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey[600],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  const Icon(
+                    Icons.chevron_right_rounded,
+                    size: 22,
+                    color: Colors.grey,
+                  ),
                 ],
-                Icon(
-                  Icons.chevron_right,
-                  size: 22,
-                  color: Colors.grey.shade400,
-                ),
-              ],
+              ),
             ),
-          ],
+          ),
+        ),
+        if (showDivider)
+          Padding(
+            padding: const EdgeInsets.only(left: 60, right: 16),
+            child: Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.grey[200],
+            ),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 12),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w700,
+          color: Colors.grey[600],
+          letterSpacing: 0.5,
         ),
       ),
     );
   }
 
-  Widget _buildIconBadge({
-    required IconData icon,
-    required Color backgroundColor,
-    required Color iconColor,
-  }) {
-    return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Icon(
-        icon,
-        color: iconColor,
-        size: 20,
-      ),
+  Widget _buildDefaultLogo() {
+    return Image.asset(
+      'assets/images/logo.png',
+      width: 30,
+      height: 30,
+      fit: BoxFit.contain,
     );
   }
 
-  Widget _buildItemDivider() {
-    return Divider(
-      height: 1,
-      thickness: 1,
-      indent: 72,
-      endIndent: 20,
-      color: Colors.grey.shade200,
-    );
+  Future<Widget> _buildProfileImage(User? user) async {
+    if (user?.photoURL == null || user!.photoURL!.isEmpty) {
+      return Image.asset(
+        'assets/images/logo.png',
+        width: 30,
+        height: 30,
+        fit: BoxFit.contain,
+      );
+    }
+
+    try {
+      // Validate the URL before using it
+      final uri = Uri.tryParse(user.photoURL!);
+      if (uri == null || !uri.hasAbsolutePath) {
+        throw FormatException('Invalid URL');
+      }
+
+      return ClipOval(
+        child: Image.network(
+          user.photoURL!,
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'assets/images/logo.png',
+              width: 30,
+              height: 30,
+              fit: BoxFit.contain,
+            );
+          },
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return const CircularProgressIndicator();
+          },
+        ),
+      );
+    } catch (e) {
+      return Image.asset(
+        'assets/images/logo.png',
+        width: 30,
+        height: 30,
+        fit: BoxFit.contain,
+      );
+    }
   }
 
+  Future<void> _showLogoutDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: const BoxDecoration(
+                    color: Color(0xFFFFEBEE),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.logout_rounded,
+                    color: Color(0xFFD32F2F),
+                    size: 32,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Logout?',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Are you sure you want to sign out?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.grey,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: const BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        child: const Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // TODO: Implement logout
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFD32F2F),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 0,
+                        ),
+                        child: const Text(
+                          'LOGOUT',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }

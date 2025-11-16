@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,8 @@ import 'menu_page.dart';
 import 'fields/register_field_page.dart';
 import 'onboarding_tutorial.dart';
 import 'driver_badge_application.dart';
+import 'notifications_page.dart';
+import '../services/fields_service.dart';
 
 class LandingDashboard extends StatefulWidget {
   const LandingDashboard({super.key});
@@ -26,6 +29,8 @@ class _LandingDashboardState extends State<LandingDashboard>
   final MapController _mapController = MapController();
   LatLng _currentCenter = LatLng(11.005, 124.607);
   final List<LatLng> _pins = [];
+  List<FieldPin> _fieldPins = [];
+  StreamSubscription<List<FieldPin>>? _fieldsSub;
   late final AnimationController _dashboardController;
   late final Animation<double> _heroOpacity;
   late final Animation<Offset> _heroSlide;
@@ -76,6 +81,31 @@ class _LandingDashboardState extends State<LandingDashboard>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _dashboardController.forward(from: 0);
+        // subscribe to realtime updates of user's fields
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+        print(
+            'LandingDashboard: Starting field stream subscription (userId=$uid)');
+        _fieldsSub = FieldsService.streamUserFields().listen((fields) {
+          if (!mounted) return;
+          print('LandingDashboard: Stream received ${fields.length} fields');
+          setState(() {
+            _fieldPins = fields;
+            _pins
+              ..clear()
+              ..addAll(fields.map((f) => f.location));
+            print(
+                'LandingDashboard: Updated _pins with ${_pins.length} locations');
+            if (fields.isNotEmpty) {
+              _currentCenter = fields.first.location;
+            } else if (_pins.isEmpty) {
+              _pins.add(_currentCenter);
+            }
+          });
+        }, onError: (e) {
+          print('LandingDashboard: Stream error: $e');
+          // ignore stream errors for now
+          // keep default pin
+        });
       }
     });
   }
@@ -84,6 +114,7 @@ class _LandingDashboardState extends State<LandingDashboard>
   void dispose() {
     _searchCtrl.dispose();
     _dashboardController.dispose();
+    _fieldsSub?.cancel();
     super.dispose();
   }
 
@@ -310,11 +341,16 @@ class _LandingDashboardState extends State<LandingDashboard>
       case 1:
         return MapPage(
           pins: _pins,
+          fieldPins: _fieldPins,
           mapController: _mapController,
           showHeader: true,
           onBack: () => setState(() => _index = 0),
         );
       case 2:
+        return NotificationsPage(
+          onBack: () => setState(() => _index = 0),
+        );
+      case 3:
       default:
         return MenuPage(
           onBack: () => setState(() => _index = 0),
@@ -335,7 +371,14 @@ class _LandingDashboardState extends State<LandingDashboard>
         label: 'Map',
       ),
       (
-        icon: _index == 2 ? Icons.person : Icons.person_outline,
+        icon: _index == 2
+            ? Icons.notifications
+            : Icons.notifications_none_outlined,
+        activeIcon: Icons.notifications,
+        label: 'Alerts',
+      ),
+      (
+        icon: _index == 3 ? Icons.person : Icons.person_outline,
         activeIcon: Icons.person,
         label: 'Account',
       ),
@@ -358,64 +401,50 @@ class _LandingDashboardState extends State<LandingDashboard>
         children: List.generate(navItems.length, (i) {
           final isSelected = _index == i;
           final item = navItems[i];
+          final Color activeColor = const Color(0xFF2F8F46);
+          final Color inactiveColor = Colors.grey.shade500;
 
           return Expanded(
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              height: 48,
+              margin: const EdgeInsets.symmetric(horizontal: 6),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
-                color: _showTutorial
-                    ? Colors.grey.shade300
-                    : isSelected
-                        ? const Color(0xFF2F8F46)
-                        : Colors.transparent,
-                borderRadius: BorderRadius.circular(24),
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(20),
                   onTap:
                       _showTutorial ? null : () => setState(() => _index = i),
-                  child: Row(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         isSelected ? item.activeIcon : item.icon,
-                        size: 22,
-                        color: isSelected
-                            ? Colors.white
-                            : _showTutorial
-                                ? Colors.grey.shade500
-                                : Colors.grey.shade600,
+                        size: 24,
+                        color: _showTutorial
+                            ? Colors.grey.shade500
+                            : isSelected
+                                ? activeColor
+                                : inactiveColor,
                       ),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        transitionBuilder: (child, animation) => FadeTransition(
-                          opacity: animation,
-                          child: SizeTransition(
-                            sizeFactor: animation,
-                            axis: Axis.horizontal,
-                            child: child,
-                          ),
+                      const SizedBox(height: 6),
+                      Text(
+                        item.label,
+                        style: TextStyle(
+                          color: _showTutorial
+                              ? Colors.grey.shade600
+                              : isSelected
+                                  ? activeColor
+                                  : inactiveColor,
+                          fontWeight:
+                              isSelected ? FontWeight.w700 : FontWeight.w500,
+                          fontSize: 12,
                         ),
-                        child: isSelected
-                            ? Padding(
-                                key: ValueKey('label-${item.label}'),
-                                padding: const EdgeInsets.only(left: 6),
-                                child: Text(
-                                  item.label,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              )
-                            : const SizedBox.shrink(),
                       ),
                     ],
                   ),
@@ -467,6 +496,7 @@ class _LandingDashboardState extends State<LandingDashboard>
                         borderRadius: BorderRadius.circular(14),
                         child: MapPage(
                           pins: _pins,
+                          fieldPins: _fieldPins,
                           mapController: _mapController,
                         ),
                       ),
